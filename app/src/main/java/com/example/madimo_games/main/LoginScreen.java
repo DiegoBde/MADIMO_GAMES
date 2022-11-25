@@ -30,7 +30,6 @@ public class LoginScreen extends AppCompatActivity {
     Button btnLogin;
     String correo = "", pass = "";
     FirebaseAuth auth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

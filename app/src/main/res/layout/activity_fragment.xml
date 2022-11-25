@@ -8,25 +8,28 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#C14747"
-        android:id="@+id/tab_layout">
+        android:background="#010617"
+        app:tabIconTint="#56F9F9"
+        app:tabIndicatorColor="#56F9F9"
+        app:tabTextColor="#56F9F9">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:icon="@drawable/feliz"/>
+            android:icon="@drawable/numerosvector" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:icon="@drawable/triste"/>
+            android:icon="@drawable/gatovector" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:icon="@drawable/spawnicon"/>
+            android:icon="@drawable/breakoutvector" />
 
     </com.google.android.material.tabs.TabLayout>
 
@@ -54,9 +57,9 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:backgroundTint="@color/teal_200"
-            android:src="@drawable/spawnicon"
-            tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,ImageContrastCheck"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            android:src="@android:drawable/ic_input_add"
+            tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,ImageContrastCheck" />
 
     </LinearLayout>
 
