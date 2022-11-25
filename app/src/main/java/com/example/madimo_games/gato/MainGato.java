@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.madimo_games.R;
+import com.example.madimo_games.main.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,18 @@ public class MainGato extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_gato);
+
+
+        //======= PANTALLA COMPLETA========================
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        Constants.SCREEN_WIDTH = dm.widthPixels;
+        Constants.SCREEN_HEIGHT = dm.heightPixels;
+        //============================================================
+
+
         mp = MediaPlayer.create(this,R.raw.botonesgato);
         fatality = MediaPlayer.create(this,R.raw.fatality);
         crono = (TextView) findViewById(R.id.crono);
@@ -310,5 +325,23 @@ public class MainGato extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideSystemUI();
 
+        }
+    } //Esconder UI cuando se cambia de foco
+
+    private void hideSystemUI() {
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    } //Esconder UI
 }

@@ -209,4 +209,15 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_bandera"
+        android:layout_width="75dp"
+        android:layout_height="45dp"
+        android:translationY="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

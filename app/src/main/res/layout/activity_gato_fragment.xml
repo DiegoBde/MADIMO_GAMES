@@ -3,23 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C8FA82"
+    android:background="#010617"
     tools:context=".main.GatoFragment">
+
+    <VideoView
+        android:id="@+id/vv_gameplayGato"
+        android:layout_width="380dp"
+        android:layout_height="700dp"
+        android:layout_gravity="center" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="800dp"
+        android:alpha="0.5"
+        android:scaleType="fitXY"
+        android:src="@drawable/fondoperfil" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:translationY="80dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="77dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/audiowide"
-            android:text="EL GATO"
-            android:textColor="#C12020"
-            android:textSize="24dp" />
+            android:text="GATO"
+            android:textColor="#56F9F9"
+            android:textSize="40dp" />
 
         <Button
             android:id="@+id/btnJugar"
@@ -33,13 +47,6 @@
             android:textColor="#2664CF"
             android:textSize="30dp"
             android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="110dp"
-            android:src="@drawable/spawnicon" />
 
 
     </LinearLayout>
