@@ -37,10 +37,11 @@ public class AdaptadorUsuario extends RecyclerView.Adapter<AdaptadorUsuario.myHo
     public void onBindViewHolder(@NonNull myHolder holder, int i) {
         String imagen = usuarioList.get(i).getImagen();
         String nombre = usuarioList.get(i).getName();
-        String puntaje = usuarioList.get(i).getScore3();
+        int puntaje = usuarioList.get(i).getScore3();
+        String puntajeString = String.valueOf(puntaje);
 
         holder.nombreJugador.setText(nombre);
-        holder.puntajeJugador.setText(puntaje);
+        holder.puntajeJugador.setText(puntajeString);
 
         try{
             Picasso.get().load(imagen).into(holder.imagenJugador);

@@ -23,7 +23,9 @@ import java.util.List;
 
 public class AltosPuntajes extends AppCompatActivity {
     LinearLayoutManager mLayoutManager;
+   // LinearLayoutManager mLayoutManager2;
     RecyclerView recyclerViewUsuarios;
+    //RecyclerView recyclerViewUsuarios2;
     AdaptadorUsuario adaptadorUsuario;
     ArrayList<Usuario> usuarioList;
     FirebaseAuth auth;
@@ -41,23 +43,29 @@ public class AltosPuntajes extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         mLayoutManager = new LinearLayoutManager(this);
+        //mLayoutManager2 = new LinearLayoutManager(this);
         auth = FirebaseAuth.getInstance();
         dataBase = FirebaseDatabase.getInstance().getReference();
         recyclerViewUsuarios = findViewById(R.id.recyclerViewUsuarios);
+        //recyclerViewUsuarios2 = findViewById(R.id.recyclerViewUsuarios2);
 
         mLayoutManager.setReverseLayout(true); //ordenar al reves
         mLayoutManager.setStackFromEnd(true);
+        recyclerViewUsuarios.setHasFixedSize(true);
         recyclerViewUsuarios.setLayoutManager(mLayoutManager);
+       // recyclerViewUsuarios2.setHasFixedSize(true);
+       // recyclerViewUsuarios2.setLayoutManager(mLayoutManager2);
+
         usuarioList = new ArrayList<>();
 
-        obtenerTodosLosUsuarios();
+        obtenerTodosLosUsuarios("score3");
 
     }
 
-    private void obtenerTodosLosUsuarios() {
-        //FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
-        //DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        dataBase.orderByChild("score3").addValueEventListener(new ValueEventListener() {
+    private void obtenerTodosLosUsuarios(String juego) {
+        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.orderByChild(juego).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 usuarioList.clear();
@@ -68,9 +76,9 @@ public class AltosPuntajes extends AppCompatActivity {
                     //      usuarioList.add(usuario)
                     // }
                     usuarioList.add(usuario);
-
                     adaptadorUsuario = new AdaptadorUsuario(AltosPuntajes.this, usuarioList);
                     recyclerViewUsuarios.setAdapter(adaptadorUsuario);
+                    //recyclerViewUsuarios2.setAdapter(adaptadorUsuario);
                 }
             }
 

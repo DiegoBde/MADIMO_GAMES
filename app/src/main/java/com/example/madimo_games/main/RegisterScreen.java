@@ -3,6 +3,7 @@ package com.example.madimo_games.main;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -34,11 +35,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterScreen extends AppCompatActivity {
+
     private ExpandableListView expLV;
     private ExpLAdapter adapter;
     private ArrayList<String> listCategorias;
     private Map<String, ArrayList<String>> mapChild;
-
     private VideoView vvFondoRegister;
     String email, password, name, nick, pais, imagen = "";
     int score1 = 0;
@@ -53,6 +54,12 @@ public class RegisterScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Registrarse");
+
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -178,6 +185,7 @@ public class RegisterScreen extends AppCompatActivity {
         });
     }
 
+
     public void reproducirVideo(){
         vvFondoRegister.start(); //inicia Video
         vvFondoRegister.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -200,10 +208,16 @@ public class RegisterScreen extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                       // | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 }
