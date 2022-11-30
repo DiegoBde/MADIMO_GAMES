@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.VideoView;
 
 import com.example.madimo_games.R;
@@ -30,7 +31,22 @@ public class GatoFragment extends Fragment  {
         gameplayGato.setVideoURI(Uri.parse("android.resource://"+getActivity().getPackageName()+"/"+R.raw.gameplaygato));
 
 
-        Button btnJugar = (Button) v.findViewById(R.id.btnJugar);
+        ImageButton btnJugar = v.findViewById(R.id.btn_jugarGato);
+        ImageButton btnScore = v.findViewById(R.id.btn_scoreGato);
+
+        btnScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in2 = new Intent(getActivity(), AltosPuntajes.class);
+                Bundle bundle;
+                bundle = new Bundle();
+                String numJuego = "score2";
+                bundle.putString("numJuego", numJuego);
+                in2.putExtra("numJuego", numJuego);
+                startActivity(in2);
+            }
+        });
+
         btnJugar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

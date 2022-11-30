@@ -12,13 +12,27 @@
     android:background="@drawable/space"
     tools:context=".main.AltosPuntajes">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewUsuarios"
+    <TextView
+        android:id="@+id/txt_tablaPuntajes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:fontFamily="@font/audiowide"
+        android:gravity="center"
+        android:text="TOP PUNTAJES"
+        android:textColor="#56F9F9"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/txt_juegoTabla"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/audiowide"
+        android:gravity="center"
+        android:textColor="#56F9F9"
+        android:textSize="20sp" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewUsuarios2"
+        android:id="@+id/recyclerViewUsuarios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

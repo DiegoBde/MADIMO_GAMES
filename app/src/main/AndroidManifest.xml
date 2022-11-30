@@ -85,13 +85,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".main.LeaderBoardScreen"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".main.AltosPuntajes"
             android:exported="false">
             <meta-data

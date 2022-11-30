@@ -1,8 +1,8 @@
 package com.example.madimo_games.main;
 
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +23,12 @@ public class AdaptadorUsuario extends RecyclerView.Adapter<AdaptadorUsuario.myHo
 
     private Context context;
     private List<Usuario> usuarioList;
+    private int juego, puntaje;
 
-    public AdaptadorUsuario(Context context, List<Usuario> usuarioList) {
+    public AdaptadorUsuario(Context context, List<Usuario> usuarioList, int juego) {
         this.context = context;
         this.usuarioList = usuarioList;
+        this.juego = juego;
     }
 
     @NonNull
@@ -39,11 +41,22 @@ public class AdaptadorUsuario extends RecyclerView.Adapter<AdaptadorUsuario.myHo
     @Override
     public void onBindViewHolder(@NonNull myHolder holder, int i) {
 
-
         String imagen = usuarioList.get(i).getImagen();
         String nombre = usuarioList.get(i).getName();
         String pais = usuarioList.get(i).getCountry();
-        int puntaje = usuarioList.get(i).getScore3();
+
+        switch (juego){
+            case 1:
+                 puntaje = usuarioList.get(i).getScore1();
+                break;
+            case 2:
+                 puntaje = usuarioList.get(i).getScore2();
+                break;
+            case 3:
+                 puntaje = usuarioList.get(i).getScore3();
+                break;
+        }
+
         String puntajeString = String.valueOf(puntaje);
 
         holder.nombreJugador.setText(nombre);

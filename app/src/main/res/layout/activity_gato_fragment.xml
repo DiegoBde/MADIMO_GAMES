@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +23,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="650dp"
         android:orientation="vertical"
         android:translationY="80dp">
 
@@ -35,18 +36,33 @@
             android:textColor="#56F9F9"
             android:textSize="40dp" />
 
-        <Button
-            android:id="@+id/btnJugar"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="200dp"
-            android:backgroundTint="#FFEB3B"
-            android:fontFamily="@font/audiowide"
-            android:text="J U G A R"
-            android:textColor="#2664CF"
-            android:textSize="30dp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="vertical"
+            android:translationY="275dp">
+
+            <ImageButton
+                android:id="@+id/btn_jugarGato"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:alpha="0.75"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/playbutton" />
+
+            <ImageButton
+                android:id="@+id/btn_scoreGato"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center"
+                android:alpha="0.75"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/scorebutton"
+                android:translationY="25dp" />
+        </LinearLayout>
 
 
     </LinearLayout>

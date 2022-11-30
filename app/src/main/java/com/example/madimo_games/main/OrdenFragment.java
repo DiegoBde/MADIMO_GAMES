@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.VideoView;
 
 import com.example.madimo_games.R;
@@ -26,7 +27,22 @@ public class OrdenFragment extends Fragment {
             gameplayOrden = (VideoView) v.findViewById(R.id.vv_gameplayOrden);
             gameplayOrden.setVideoURI(Uri.parse("android.resource://"+getActivity().getPackageName()+"/"+R.raw.gameplayordenamix));
 
-            Button btnJugar = (Button) v.findViewById(R.id.btnJugar);
+            ImageButton btnJugar = v.findViewById(R.id.btn_jugarOrden);
+            ImageButton btnScore = v.findViewById(R.id.btn_scoreOrden);
+
+            btnScore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent in2 = new Intent(getActivity(), AltosPuntajes.class);
+                    Bundle bundle;
+                    bundle = new Bundle();
+                    String numJuego = "score1";
+                    bundle.putString("numJuego", numJuego);
+                    in2.putExtra("numJuego", numJuego);
+                    startActivity(in2);
+                }
+            });
+
             btnJugar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

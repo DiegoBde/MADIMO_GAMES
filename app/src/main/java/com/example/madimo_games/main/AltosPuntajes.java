@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.madimo_games.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,19 +25,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AltosPuntajes extends AppCompatActivity {
+    String numJuego;
+    Bundle recibido;
     LinearLayoutManager mLayoutManager;
-   // LinearLayoutManager mLayoutManager2;
+    //LinearLayoutManager mLayoutManager2;
     RecyclerView recyclerViewUsuarios;
     //RecyclerView recyclerViewUsuarios2;
     AdaptadorUsuario adaptadorUsuario;
     ArrayList<Usuario> usuarioList;
     FirebaseAuth auth;
     DatabaseReference dataBase;
+    TextView txtNombreJuego;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_altos_puntajes);
+
+        recibido = this.getIntent().getExtras();
+        numJuego = recibido.getString("numJuego");
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Puntajes");
@@ -47,6 +56,7 @@ public class AltosPuntajes extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         dataBase = FirebaseDatabase.getInstance().getReference();
         recyclerViewUsuarios = findViewById(R.id.recyclerViewUsuarios);
+        txtNombreJuego = findViewById(R.id.txt_juegoTabla);
         //recyclerViewUsuarios2 = findViewById(R.id.recyclerViewUsuarios2);
 
         mLayoutManager.setReverseLayout(true); //ordenar al reves
@@ -57,13 +67,24 @@ public class AltosPuntajes extends AppCompatActivity {
        // recyclerViewUsuarios2.setLayoutManager(mLayoutManager2);
 
         usuarioList = new ArrayList<>();
+        obtenerTodosLosUsuarios(String.valueOf(numJuego));
 
-        obtenerTodosLosUsuarios("score3");
 
     }
 
     private void obtenerTodosLosUsuarios(String juego) {
-        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        switch (juego){
+            case "score1":
+                txtNombreJuego.setText("Ordenamix");
+                break;
+            case "score2":
+                txtNombreJuego.setText("Gato");
+                break;
+            case "score3":
+                txtNombreJuego.setText("BreakOut");
+                break;
+        }
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.orderByChild(juego).addValueEventListener(new ValueEventListener() {
             @Override
@@ -72,13 +93,19 @@ public class AltosPuntajes extends AppCompatActivity {
                 for(DataSnapshot ds : snapshot.getChildren()){
                     Usuario usuario = ds.getValue(Usuario.class);
 
-                    //  if(!usuario.getUid().equals(fUser).getUid()){
-                    //      usuarioList.add(usuario)
-                    // }
                     usuarioList.add(usuario);
-                    adaptadorUsuario = new AdaptadorUsuario(AltosPuntajes.this, usuarioList);
+                    switch (juego){
+                        case "score1":
+                            adaptadorUsuario = new AdaptadorUsuario(AltosPuntajes.this, usuarioList, 1);
+                            break;
+                        case "score2":
+                            adaptadorUsuario = new AdaptadorUsuario(AltosPuntajes.this, usuarioList, 2);
+                            break;
+                        case "score3":
+                            adaptadorUsuario = new AdaptadorUsuario(AltosPuntajes.this, usuarioList, 3);
+                            break;
+                    }
                     recyclerViewUsuarios.setAdapter(adaptadorUsuario);
-                    //recyclerViewUsuarios2.setAdapter(adaptadorUsuario);
                 }
             }
 
@@ -94,4 +121,5 @@ public class AltosPuntajes extends AppCompatActivity {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
+
 }

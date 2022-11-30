@@ -1,7 +1,5 @@
 package com.example.madimo_games.breakout;
 
-
-
 import static java.lang.String.valueOf;
 
 import android.app.Activity;

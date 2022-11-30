@@ -13,8 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.madimo_games.R;
+import com.example.madimo_games.main.AltosPuntajes;
 import com.example.madimo_games.main.Constants;
-import com.example.madimo_games.main.LeaderBoardScreen;
 import com.example.madimo_games.main.MainScreen;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +38,7 @@ public class GameOverScreen extends AppCompatActivity {
         setContentView(R.layout.activity_game_over_screen);
         Intent inRetry = new Intent(this, MainBreakOut.class);
         Intent inMain = new Intent(this, MainScreen.class);
-        Intent inScores = new Intent(this, LeaderBoardScreen.class);
+        Intent inScores = new Intent(this, AltosPuntajes.class);
 
 
         recibido = this.getIntent().getExtras();
