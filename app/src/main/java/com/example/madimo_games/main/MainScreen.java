@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -22,9 +23,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class MainScreen extends AppCompatActivity {
+    Boolean estaLogueado = false, mute = false;
     TextView txtLogin;
+    private ImageView ivPerfil, ivMusic;
     private VideoView vvBg;
     public ImageButton btnLogin, btnPlay, btnLeaderBoard, btnPerfil;
     MediaPlayer backgroundMusic;
@@ -41,20 +45,34 @@ public class MainScreen extends AppCompatActivity {
 
         Intent inLogin = new Intent(this, LoginScreen.class);
         Intent inPerfil = new Intent(this, ProfileScreen.class);
-        Intent inJugar = new Intent(this, FragmentActivity.class); //cambiar por fragment
+        Intent inJugar = new Intent(this, FragmentActivity.class);
         Intent inScore = new Intent(this, AltosPuntajes.class);
 
-        btnLogin=(ImageButton)findViewById(R.id.ibtn_login);
-        btnPerfil=(ImageButton)findViewById(R.id.ibtn_profile);
-        btnLeaderBoard=(ImageButton)findViewById(R.id.ibtn_score);
-        btnPlay=(ImageButton)findViewById(R.id.ibtn_jugar);
+        ivPerfil = findViewById(R.id.iv_perfil);
+        ivMusic = findViewById(R.id.ibtn_sound);
+        btnLogin = findViewById(R.id.ibtn_login);
+        btnLeaderBoard = findViewById(R.id.ibtn_score);
+        btnPlay = findViewById(R.id.ibtn_jugar);
         txtLogin = findViewById(R.id.txt_login);
 
-        ClickBotonLogin(inLogin);
-        ClickBotonPerfil(inPerfil);
+        //ClickBotonLogin(inLogin);
+        ClickBotonMusic();
         ClickBotonJugar(inJugar);
         ClickBotonPuntajes(inScore);
 
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backgroundMusic.stop();
+                if(estaLogueado){
+                    startActivity(inPerfil);
+                }else{
+                    startActivity(inLogin);
+                }
+
+
+            }
+        });
         try {
             getUserInfo();
         }catch (Exception e){
@@ -75,8 +93,6 @@ public class MainScreen extends AppCompatActivity {
         vvBg = findViewById(R.id.vv_fondoMain); //obtenemos el objeto VideoView
         vvBg.setVideoURI(Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.backgroundgame)); //le asignamos el video
         reproducirVideo();
-        backgroundMusic = MediaPlayer.create(this, R.raw.backgroud_music);
-        backgroundMusic.start();
 
     }
 
@@ -101,22 +117,22 @@ public class MainScreen extends AppCompatActivity {
             }
         });
     }
-    public void ClickBotonLogin(Intent in){
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                backgroundMusic.stop();
-                startActivity(in);
 
-            }
-        });
-    }
-    public void ClickBotonPerfil(Intent in){
-        btnPerfil.setOnClickListener(new View.OnClickListener() {
+    public void ClickBotonMusic(){
+        ivMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                backgroundMusic.stop();
-                startActivity(in);
+                //backgroundMusic.stop();
+                if(!mute){
+                    backgroundMusic.setVolume(0,0);
+                    Picasso.get().load(R.drawable.musicoffbutton).into(ivMusic);
+                    mute = true;
+
+                }else{
+                    mute = false;
+                    backgroundMusic.setVolume(1,1);
+                    Picasso.get().load(R.drawable.musiconbutton).into(ivMusic);
+                }
 
             }
         });
@@ -127,18 +143,28 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public void onPrepared(MediaPlayer mp) { //Video en loop infinito
                 mp.setLooping(true);
+
             }
         });
     }
 
     private void getUserInfo(){
-        String id= auth.getCurrentUser().getUid();
+        String id = auth.getCurrentUser().getUid();
         dataBase.child("Users").child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    txtLogin.setText("Bienvenido "+dataSnapshot.child("nick").getValue().toString());
+                    try{
+                        txtLogin.setText("Bienvenido "+dataSnapshot.child("nick").getValue().toString());
+                        String imagen = dataSnapshot.child("imagen").getValue().toString();
+                        Picasso.get().load(imagen).into(ivPerfil);
+                        estaLogueado = true;
+                    }catch (Exception e){
 
+                    }
+
+                }else{
+                    estaLogueado = false;
                 }
             }
 
@@ -156,7 +182,18 @@ public class MainScreen extends AppCompatActivity {
         if (hasFocus) {
             hideSystemUI();
             reproducirVideo();
-            getUserInfo();
+            backgroundMusic = MediaPlayer.create(this, R.raw.backgroud_music);
+            if(mute){
+                backgroundMusic.setVolume(0,0);
+            }else{
+                backgroundMusic.setVolume(1,1);
+            }
+            backgroundMusic.start();
+            try {
+                getUserInfo();
+            }catch (Exception e){
+
+            }
         }
     }
 

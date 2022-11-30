@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    app:cardBackgroundColor="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:translationX="5dp"
+            android:translationY="5dp">
+
+            <ImageView
+                android:id="@+id/iv_fotoPerfilJugador1"
+                android:layout_width="65dp"
+                android:layout_height="70dp"
+                android:layout_weight="0"
+                android:scaleType="fitXY"
+                android:translationX="5dp"
+                app:srcCompat="@drawable/spawnicon" />
+
+            <LinearLayout
+                android:layout_width="226dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:orientation="vertical"
+                android:translationX="10dp"
+                android:translationY="3dp">
+
+                <TextView
+                    android:id="@+id/txt_nombreJugador1"
+                    android:layout_width="136dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Jugador"
+                    android:textColor="#56F9F9"
+                    android:textSize="20sp"
+                    android:translationX="5dp" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:fontFamily="@font/audiowide"
+                    android:text="PUNTAJE"
+                    android:textColor="#56F9F9"
+                    android:textSize="10sp"
+                    android:translationX="5dp" />
+
+                <TextView
+                    android:id="@+id/txt_puntajeJugador1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:fontFamily="@font/audiowide"
+                    android:text="00"
+                    android:textColor="#56F9F9"
+                    android:textSize="15sp"
+                    android:translationX="5dp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_banderaPais"
+                android:layout_width="65dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:scaleType="fitXY"
+                android:translationX="10dp"
+                android:translationY="2dp"
+                app:srcCompat="@drawable/chile" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/marcoperfiles" />
+
+</androidx.cardview.widget.CardView>

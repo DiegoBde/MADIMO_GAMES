@@ -88,7 +88,7 @@ public class LoginScreen extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     startActivity(new Intent(LoginScreen.this, ProfileScreen.class));
-                    Toast.makeText(LoginScreen.this, "Bien", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginScreen.this, "Bien", Toast.LENGTH_SHORT).show();
                     //finish();
                 }else{
                     Toast.makeText(LoginScreen.this, "Error", Toast.LENGTH_SHORT).show();

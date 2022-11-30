@@ -32,6 +32,13 @@ public class MainBreakOut extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        getParent().finish();
+
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {

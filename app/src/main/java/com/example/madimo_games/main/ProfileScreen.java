@@ -45,12 +45,11 @@ public class ProfileScreen extends AppCompatActivity {
     TextView nombreUser, score1, score2, score3;
     Button btnLogOut;
     ImageButton btnEditarFoto;
-    ImageView ivFotoPerfil;
+    ImageView ivFotoPerfil, ivPaisJugador;
     FirebaseAuth auth;
     DatabaseReference dataBase;
     StorageReference storage;
     String rutaAlmacenamiento = "FotosDePerfil/*";
-
     private static final int CODIGO_DE_SOLICITUD_DE_ALMACENAMIENTO = 200;
     private static final int CODIGO_PARA_LA_SELECCION_DE_LA_IMAGEN = 300;
 
@@ -64,15 +63,12 @@ public class ProfileScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_screen);
 
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         Constants.SCREEN_WIDTH = dm.widthPixels;
         Constants.SCREEN_HEIGHT = dm.heightPixels;
-
-
 
         auth = FirebaseAuth.getInstance();
         dataBase = FirebaseDatabase.getInstance().getReference();
@@ -87,8 +83,8 @@ public class ProfileScreen extends AppCompatActivity {
         btnEditarFoto = findViewById(R.id.btn_editarFoto);
         btnLogOut = findViewById(R.id.btn_volver);
         ivFotoPerfil = findViewById(R.id.iv_fotoProfile);
+        ivPaisJugador = findViewById(R.id.iv_bandera);
         getUserInfo();
-
 
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,6 +242,7 @@ public class ProfileScreen extends AppCompatActivity {
                     String scoreGato = dataSnapshot.child("score2").getValue().toString();
                     String scoreBreakOut = dataSnapshot.child("score3").getValue().toString();
                     String imagen = dataSnapshot.child("imagen").getValue().toString();
+                    String pais = dataSnapshot.child("country").getValue().toString();
 
                     nombreUser.setText(name);
                     score1.setText(scoreOrdenamiento);
@@ -254,6 +251,21 @@ public class ProfileScreen extends AppCompatActivity {
 
                     try {
                         Picasso.get().load(imagen).into(ivFotoPerfil);
+                        switch (pais){
+
+                            case "Argentina":
+                                Picasso.get().load(R.drawable.argentina).into(ivPaisJugador);
+                                break;
+                            case "Chile":
+                                Picasso.get().load(R.drawable.chile).into(ivPaisJugador);
+                                break;
+                            case "Peru":
+                                Picasso.get().load(R.drawable.peru).into(ivPaisJugador);
+                                break;
+                            case "Colombia":
+                                Picasso.get().load(R.drawable.colombia).into(ivPaisJugador);
+                                break;
+                        }
 
                     }catch (Exception e){
                         Picasso.get().load(R.drawable.spawnicon).into(ivFotoPerfil);
