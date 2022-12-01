@@ -39,8 +39,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     int milli=0, seg=0, mins=0, score=0;
     Score puntaje = new Score();
     String id;
-    String puntajeNuevo;
-    String puntajeRecord;
+    int puntajeNuevo;
+    int puntajeRecord;
     Resources res = getResources();
     Bitmap bitmapBG = BitmapFactory.decodeResource(res, R.drawable.space);
     Bitmap bitmapBG2 = BitmapFactory.decodeResource(res, R.drawable.paddle);
@@ -52,7 +52,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     MediaPlayer jumpBall = MediaPlayer.create(getContext(),R.raw.pelotarebota);
     MediaPlayer jumpBall2 = MediaPlayer.create(getContext(),R.raw.pelotarebota);
     MediaPlayer breakBricks = MediaPlayer.create(getContext(),R.raw.rompebloques);
-    MediaPlayer gameOverMusic = MediaPlayer.create(getContext(),R.raw.gameover);
+    //MediaPlayer gameOverMusic = MediaPlayer.create(getContext(),R.raw.gameover);
     private MainThread thread;
     private Rect r = new Rect();
 
@@ -121,13 +121,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         return "╰═ Tiempo: "+mins+":"+seg+" ═╯";
     }
     public void reset(){
-        Bundle bundle;
-        bundle = new Bundle();
-        int puntaje = score;
-        bundle.putInt("puntaje", puntaje);
-        inGameOver.putExtra("puntaje", puntaje);
-        getContext().startActivity(inGameOver);
-        mainBreakOut.finish();
+        //Bundle bundle;
+        //bundle = new Bundle();
+        //int puntaje = score;
+        //bundle.putInt("puntaje", puntaje);
+        //inGameOver.putExtra("puntaje", puntaje);
+        //getContext().startActivity(inGameOver);
+        //mainBreakOut.finish();
 
         /*gameOverMusic.stop();
         backgroundMusic = MediaPlayer.create(getContext(),R.raw.backgroud_music);
@@ -235,12 +235,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if (ballPoint.y > Constants.SCREEN_HEIGHT && signoX) {  //  ./
             direccion = 3;
             backgroundMusic.stop();
-            gameOverMusic.start();
-            puntajeNuevo = score+"";
+            //gameOverMusic.start();
+            puntajeNuevo = score;
             dataBase.child("Users").child(id).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    puntajeRecord = snapshot.child("score3").getValue().toString();
+                    puntajeRecord = (int)snapshot.child("score3").getValue();
                     puntaje.nuevoRecord(puntajeNuevo,puntajeRecord,dataBase,id);
                 }
 
@@ -252,18 +252,23 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             gameOver = true;
             //getContext().startActivity(inGameOver);
-
+            Bundle bundle;
+            bundle = new Bundle();
+            int puntaje = score;
+            bundle.putInt("puntaje", puntaje);
+            inGameOver.putExtra("puntaje", puntaje);
+            getContext().startActivity(inGameOver);
+            mainBreakOut.finish();
         }
         if (ballPoint.y > Constants.SCREEN_HEIGHT && !signoX) {
             direccion = 1;
             backgroundMusic.stop();
-            gameOverMusic.start();
-
-            puntajeNuevo = score+"";
+            //gameOverMusic.start();
+            puntajeNuevo = score;
             dataBase.child("Users").child(id).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    puntajeRecord = snapshot.child("score3").getValue().toString();
+                    puntajeRecord = (int)snapshot.child("score3").getValue();
                     puntaje.nuevoRecord(puntajeNuevo,puntajeRecord,dataBase,id);
                 }
 
@@ -275,7 +280,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             gameOver = true;
             //getContext().startActivity(inGameOver);
-
+            Bundle bundle;
+            bundle = new Bundle();
+            int puntaje = score;
+            bundle.putInt("puntaje", puntaje);
+            inGameOver.putExtra("puntaje", puntaje);
+            getContext().startActivity(inGameOver);
+            mainBreakOut.finish();
         }
         if (ballPoint.x < 0 && signoY) {
             jumpBall2.start();
@@ -362,10 +373,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         if(gameOver){
             isOn=false;
-            paint.setTextSize(100);
-            paint.setColor(Color.rgb(235,101,71));
-            paint.setTypeface(getResources().getFont(R.font.audiowide));
-            drawCenterText(canvas, paint, "〘 Game Over 〙");
+           // paint.setTextSize(100);
+            //paint.setColor(Color.rgb(235,101,71));
+           // paint.setTypeface(getResources().getFont(R.font.audiowide));
+           // drawCenterText(canvas, paint, "〘 Game Over 〙");
 
         }
 

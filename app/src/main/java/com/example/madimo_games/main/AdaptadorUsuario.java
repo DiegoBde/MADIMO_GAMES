@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -89,7 +90,6 @@ public class AdaptadorUsuario extends RecyclerView.Adapter<AdaptadorUsuario.myHo
     public int getItemCount() {
         return usuarioList.size();
     }
-
 
     public class myHolder extends RecyclerView.ViewHolder{
 

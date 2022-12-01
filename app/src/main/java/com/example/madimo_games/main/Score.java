@@ -20,9 +20,9 @@ public class Score {
         }
     }
      */
-    public void nuevoRecord(String puntajeNuevo, String puntajeRecord, DatabaseReference database, String id){
+    public void nuevoRecord(int puntajeNuevo, int puntajeRecord, DatabaseReference database, String id){
         Map<String, Object> mapUpdate= new HashMap<>();
-        if(Integer.parseInt(puntajeRecord) < Integer.parseInt(puntajeNuevo)){ //revisar los tipos de datos, dejar score con integer
+        if(puntajeRecord < puntajeNuevo){ //revisar los tipos de datos, dejar score con integer
             mapUpdate.put("score1", 2000);
             mapUpdate.put("score2", 1);
             mapUpdate.put("score3", puntajeNuevo);

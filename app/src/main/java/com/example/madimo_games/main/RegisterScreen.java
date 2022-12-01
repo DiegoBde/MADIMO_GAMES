@@ -41,7 +41,7 @@ public class RegisterScreen extends AppCompatActivity {
     private ArrayList<String> listCategorias;
     private Map<String, ArrayList<String>> mapChild;
     private VideoView vvFondoRegister;
-    String email, password, name, nick, pais, imagen = "";
+    String email, password, name, nick, pais, imagen = "", item;
     int score1 = 0;
     int score2 = 0;
     int score3 = 0;
@@ -88,15 +88,13 @@ public class RegisterScreen extends AppCompatActivity {
         ClickBotonRegister();
         cargarDatos();
         seleccionPais();
-
-
     }
     public void cargarDatos(){
         ArrayList<String> listPaises = new ArrayList<>();
 
         listPaises.add("Chile");
         listPaises.add("Argentina");
-        listPaises.add("Perú");
+        listPaises.add("Peru");
         listPaises.add("Colombia");
 
         listCategorias.add("Pais");
@@ -108,7 +106,7 @@ public class RegisterScreen extends AppCompatActivity {
         expLV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(RegisterScreen.this, (String)adapter.getChild(groupPosition, childPosition) ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterScreen.this, (String)adapter.getChild(groupPosition, childPosition), Toast.LENGTH_SHORT).show();
                 pais = (String)adapter.getChild(groupPosition, childPosition);
                 return false;
             }
@@ -117,7 +115,7 @@ public class RegisterScreen extends AppCompatActivity {
         expLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                String item = parent.getItemAtPosition(position).toString();
+                item = parent.getItemAtPosition(position).toString();
 
             }
         });

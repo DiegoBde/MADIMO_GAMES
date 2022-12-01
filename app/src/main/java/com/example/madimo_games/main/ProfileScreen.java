@@ -269,6 +269,7 @@ public class ProfileScreen extends AppCompatActivity {
 
                     }catch (Exception e){
                         Picasso.get().load(R.drawable.spawnicon).into(ivFotoPerfil);
+                        Picasso.get().load(R.drawable.argentina).into(ivPaisJugador);
                     }
                 }
             }

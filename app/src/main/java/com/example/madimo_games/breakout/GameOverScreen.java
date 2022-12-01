@@ -2,14 +2,17 @@ package com.example.madimo_games.breakout;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.madimo_games.R;
@@ -29,8 +32,8 @@ public class GameOverScreen extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference dataBase;
     TextView score, scoreNuevo;
-    Button btnHome, btnRetry, btnScores;
-
+    ImageButton btnHome, btnRetry, btnScores;
+    MediaPlayer gameOverMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class GameOverScreen extends AppCompatActivity {
         Intent inMain = new Intent(this, MainScreen.class);
         Intent inScores = new Intent(this, AltosPuntajes.class);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("");
 
         recibido = this.getIntent().getExtras();
         puntaje = recibido.getInt("puntaje");
@@ -48,9 +53,9 @@ public class GameOverScreen extends AppCompatActivity {
         dataBase = FirebaseDatabase.getInstance().getReference();
         score = findViewById(R.id.txt_mejorPuntuacion);
         scoreNuevo = findViewById(R.id.txt_nuevaPuntuacion);
-        btnHome = findViewById(R.id.btn_home);
-        btnRetry = findViewById(R.id.btn_retry);
-        btnScores = findViewById(R.id.btn_scores);
+        btnHome = findViewById(R.id.ib_homeGameOver);
+        btnRetry = findViewById(R.id.ib_retryGameOver);
+        btnScores = findViewById(R.id.ib_scoreGameOver);
 
 
         btnHome.setOnClickListener(new View.OnClickListener() {
@@ -70,11 +75,22 @@ public class GameOverScreen extends AppCompatActivity {
         btnScores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle;
+                bundle = new Bundle();
+                String numJuego = "score3";
+                bundle.putString("numJuego", numJuego);
+                inScores.putExtra("numJuego", numJuego);
                 startActivity(inScores);
                 finish();
             }
         });
-        getUserInfo();
+        try {
+            getUserInfo();
+        }catch (Exception e){
+
+        }
+
+
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -82,9 +98,6 @@ public class GameOverScreen extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         Constants.SCREEN_WIDTH = dm.widthPixels;
         Constants.SCREEN_HEIGHT = dm.heightPixels;
-
-
-
 
     }
 
@@ -112,7 +125,9 @@ public class GameOverScreen extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            hideSystemUI();
+            //hideSystemUI();
+            gameOverMusic = MediaPlayer.create(this,R.raw.gameover);
+            gameOverMusic.start();
         }
     }
 

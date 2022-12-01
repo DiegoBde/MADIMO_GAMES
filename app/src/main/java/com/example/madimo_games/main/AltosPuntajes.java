@@ -1,6 +1,5 @@
 package com.example.madimo_games.main;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +10,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.madimo_games.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -105,7 +105,9 @@ public class AltosPuntajes extends AppCompatActivity {
                             adaptadorUsuario = new AdaptadorUsuario(AltosPuntajes.this, usuarioList, 3);
                             break;
                     }
-                    recyclerViewUsuarios.setAdapter(adaptadorUsuario);
+
+                        recyclerViewUsuarios.setAdapter(adaptadorUsuario);
+
                 }
             }
 

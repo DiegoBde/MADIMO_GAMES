@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.madimo_games.R;
@@ -30,7 +31,7 @@ public class MainScreen extends AppCompatActivity {
     TextView txtLogin;
     private ImageView ivPerfil, ivMusic;
     private VideoView vvBg;
-    public ImageButton btnLogin, btnPlay, btnLeaderBoard, btnPerfil;
+    public ImageButton btnLogin, btnPlay, btnLeaderBoard;
     MediaPlayer backgroundMusic;
     FirebaseAuth auth;
     DatabaseReference dataBase;
@@ -69,8 +70,6 @@ public class MainScreen extends AppCompatActivity {
                 }else{
                     startActivity(inLogin);
                 }
-
-
             }
         });
         try {
@@ -156,9 +155,15 @@ public class MainScreen extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     try{
                         txtLogin.setText("Bienvenido "+dataSnapshot.child("nick").getValue().toString());
-                        String imagen = dataSnapshot.child("imagen").getValue().toString();
-                        Picasso.get().load(imagen).into(ivPerfil);
                         estaLogueado = true;
+                        try{
+                            String imagen = dataSnapshot.child("imagen").getValue().toString();
+                            Picasso.get().load(imagen).into(ivPerfil);
+                        }catch (Exception e){
+
+                        }
+
+
                     }catch (Exception e){
 
                     }
