@@ -1,6 +1,5 @@
 package com.example.madimo_games.main;
 
-
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.madimo_games.R;
@@ -42,9 +43,9 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 
 public class ProfileScreen extends AppCompatActivity {
-    TextView nombreUser, score1, score2, score3;
+    TextView nickUser, score1, score2, score3, nombreUser, correoUser, paisUser;
     Button btnLogOut;
-    ImageButton btnEditarFoto;
+    ImageButton btnEditarFoto, btnEditarDatos;
     ImageView ivFotoPerfil, ivPaisJugador;
     FirebaseAuth auth;
     DatabaseReference dataBase;
@@ -56,7 +57,6 @@ public class ProfileScreen extends AppCompatActivity {
     private String [] permisosAlmacenamiento;
     private Uri imagen_Uri;
     private String perfil;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +75,14 @@ public class ProfileScreen extends AppCompatActivity {
         storage = FirebaseStorage.getInstance().getReference();
         permisosAlmacenamiento = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-
-        nombreUser=findViewById(R.id.txt_nickProfile);
+        nickUser =findViewById(R.id.txt_nickProfile);
+        nombreUser= findViewById(R.id.txt_nombrePerfil);
+        correoUser = findViewById(R.id.txt_correoPerfil);
+        paisUser = findViewById(R.id.txt_paisPerfil);
         score1 = findViewById(R.id.txt_scoreOrdenamiento);
         score2 = findViewById(R.id.txt_scoreGato);
         score3 = findViewById(R.id.txt_scoreBreakOut);
+        btnEditarDatos = findViewById(R.id.btn_editarDatos);
         btnEditarFoto = findViewById(R.id.btn_editarFoto);
         btnLogOut = findViewById(R.id.btn_volver);
         ivFotoPerfil = findViewById(R.id.iv_fotoProfile);
@@ -99,6 +102,13 @@ public class ProfileScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 editarDatos();
+            }
+        });
+
+        btnEditarDatos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateDataProfile();
             }
         });
 
@@ -229,7 +239,6 @@ public class ProfileScreen extends AppCompatActivity {
                 });
     }
 
-
     private void getUserInfo(){
         String id= auth.getCurrentUser().getUid();
         dataBase.child("Users").child(id).addValueEventListener(new ValueEventListener() {
@@ -237,14 +246,19 @@ public class ProfileScreen extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
 
-                    String name =  dataSnapshot.child("nick").getValue().toString();
+                    String nick =  dataSnapshot.child("nick").getValue().toString();
+                    String name =  dataSnapshot.child("name").getValue().toString();
+                    String email =  dataSnapshot.child("email").getValue().toString();
                     String scoreOrdenamiento = dataSnapshot.child("score1").getValue().toString();
                     String scoreGato = dataSnapshot.child("score2").getValue().toString();
                     String scoreBreakOut = dataSnapshot.child("score3").getValue().toString();
                     String imagen = dataSnapshot.child("imagen").getValue().toString();
                     String pais = dataSnapshot.child("country").getValue().toString();
 
-                    nombreUser.setText(name);
+                    nickUser.setText(nick);
+                    nombreUser.setText("Nombre: "+name);
+                    paisUser.setText("Pais: "+pais);
+                    correoUser.setText("Correo: "+email);
                     score1.setText(scoreOrdenamiento);
                     score2.setText(scoreGato);
                     score3.setText(scoreBreakOut);
@@ -300,6 +314,73 @@ public class ProfileScreen extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
+
+    private void updateDataProfile(){
+        String[] opciones = {"Nombre", "Pais", "Correo", "Contraseña"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(opciones, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case 0:
+                        updateDatos("name", "Nombre");
+                        break;
+                    case 1:
+                        updateDatos("country", "Pais");
+                        break;
+                    case 2:
+                        updateDatos("email", "Correo");
+                        break;
+                    case 3:
+                        updateDatos("pass", "Contraseña");
+                        break;
+                }
+            }
+        });
+        builder.create().show();
+    }
+
+    private void updateDatos(String key, String update) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Cambiar "+update);
+        LinearLayoutCompat linearLayoutCompat = new LinearLayoutCompat(this);
+        linearLayoutCompat.setOrientation(LinearLayoutCompat.VERTICAL);
+        linearLayoutCompat.setPadding(10,10,10,10);
+        EditText editText = new EditText(this);
+        editText.setHint("Ingresa "+ update);
+        linearLayoutCompat.addView(editText);
+        builder.setView(linearLayoutCompat);
+
+        builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String valor = editText.getText().toString().trim();
+                HashMap<String, Object> result = new HashMap<>();
+                result.put(key, valor);
+                dataBase.child("Users").child(auth.getCurrentUser().getUid()).updateChildren(result)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(ProfileScreen.this,"Info Actualizada", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(ProfileScreen.this,""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(ProfileScreen.this,"Operacion cancelada", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.create().show();
+    }
+
 
 
 }

@@ -7,35 +7,57 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madimo_games.R;
+import com.example.madimo_games.breakout.GameOverScreen;
+import com.example.madimo_games.main.Score;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class cuartonivel extends AppCompatActivity {
-    Button start, stop, reset;
-    boolean isOn=true;
-    TextView crono;
+    Intent in;
+    Bundle recibido, b;
+    Score clasePuntaje = new Score();
+    String nomJuego = "score1";
+    int puntaje;
+    boolean isOn;
+    TextView crono, txtPuntaje;
     Thread cronos;
     int mili=0, seg=0, minutos=0;
     Handler h=new Handler();
     MediaPlayer sonidomoneda;
+    MediaPlayer musica;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuartonivel);
+        b = new Bundle();
+        in = new Intent(this, GameOverScreen.class);
+        isOn = true;
+        TextView puntajeactual = findViewById(R.id.txtPuntajeActual);
+        txtPuntaje = findViewById(R.id.txt_Puntaje4);
+        musica = MediaPlayer.create(this,R.raw.menuordenamiento);
+        musica.start();
 
         try{
-            Bundle recibido = this.getIntent().getExtras();
+            recibido = this.getIntent().getExtras();
 
-            final String mensaje = recibido.getString("mensaje");
+            puntaje = recibido.getInt("score");
+            mili = recibido.getInt("mili");
+            seg = recibido.getInt("seg");
+            minutos = recibido.getInt("min");
+
+            puntajeactual.setText("Puntaje Actual: "+puntaje);
+
         }
         catch (Exception e)
         {}
-
         ArrayList<Button> listado = new ArrayList<Button>();
 
         listado.add((Button) findViewById(R.id.btn1));
@@ -65,7 +87,6 @@ public class cuartonivel extends AppCompatActivity {
 
         final TextView texto = (TextView)findViewById(R.id.texto);
 
-
         final ArrayList numeros = new ArrayList();
 
         for (final Button bt:listado) {
@@ -77,28 +98,27 @@ public class cuartonivel extends AppCompatActivity {
                     sonidomoneda();
                     texto.setText(texto.getText() + " " + bt.getText());
                     bt.setVisibility(View.INVISIBLE);
+                    puntaje += 100;
+                    txtPuntaje.setText("Puntaje acumulado: "+ puntaje);
                 }
             });
         }
 
-        Button validar2 =(Button)findViewById(R.id.btnValidar);
+        Button validar2 =(Button)findViewById(R.id.btnValidar4);
 
         validar2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 validarContenido(texto, numeros);}
         });
         Button auto =(Button)findViewById(R.id.autocompletar);
-
         auto.setVisibility(View.INVISIBLE);
-
-
         auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Collections.sort(numeros,Collections.reverseOrder());
                 if(numeros.equals(numeros)) {
 
-                    Intent intent = new Intent (v.getContext(),cuartonivel.class);
+                    Intent intent = new Intent (v.getContext(),infoActivity.class);
                     startActivityForResult(intent, 0);
                     startActivity(intent);
                     finish();
@@ -113,6 +133,57 @@ public class cuartonivel extends AppCompatActivity {
             }
         });
 
+        crono = (TextView) findViewById(R.id.crono);
+
+        cronos = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (isOn) {
+                        try {
+                            Thread.sleep(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        mili++;
+                        if (mili == 999) {
+                            seg++;
+                            mili = 0;
+                        }
+                        if (seg == 59) {
+                            minutos++;
+                            seg = 0;
+                        }
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                String m = "", s = "", mi = "";
+                                if (mili < 10) {
+                                    m = "00" + mili;
+                                } else if (mili < 100) {
+                                    m = "0" + mili;
+                                } else {
+                                    m = "" + mili;
+                                }
+                                if (seg < 10) {
+                                    s = "0" + seg;
+                                } else {
+                                    s = "" + seg;
+                                }
+                                if (minutos < 10) {
+                                    mi = "0" + minutos;
+                                } else {
+                                    mi = "" + minutos;
+                                }
+                                crono.setText(mi + ":" + s+":" + m);
+                            }
+                        });
+                    }
+                }
+            }
+
+        });
+        cronos.start();
 
     }
     public void sonidomoneda(){
@@ -123,7 +194,7 @@ public class cuartonivel extends AppCompatActivity {
 
     }
     private void validarContenido(TextView texto, ArrayList numeros){
-        Collections.sort(numeros);
+        Collections.sort(numeros,Collections.reverseOrder());
         String cadena="";
         for (Object num: numeros){
             cadena+=(int)num+"";
@@ -131,23 +202,13 @@ public class cuartonivel extends AppCompatActivity {
         String cadena2 = texto.getText().toString().replaceAll(" ","");
         String mensaje;
         if(cadena.equals(cadena2)) {
-            mensaje = "OK";
-            Intent in = new Intent(this,infoActivity.class);
-            Bundle b = new Bundle();
-            b.putString("mensaje", mensaje);
-            in.putExtras(b);
+            String gano = "si";
+            int score = puntaje - ((minutos/59)+(seg));
+            b.putString("gano", gano);
+            clasePuntaje.sendScore(b,score, nomJuego, in);
             startActivity(in);
         }else{
-
-            Intent in = new Intent(this,infoActivity.class);
-            mensaje="fail";
-            Bundle b = new Bundle();
-            b.putString("mensaje",mensaje);
-            in.putExtras(b);
-            startActivity(in);
-
-
-
+            Toast.makeText(this, "Lose", Toast.LENGTH_SHORT).show();
 
         }
 

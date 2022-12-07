@@ -43,7 +43,7 @@ public class AdaptadorUsuario extends RecyclerView.Adapter<AdaptadorUsuario.myHo
     public void onBindViewHolder(@NonNull myHolder holder, int i) {
 
         String imagen = usuarioList.get(i).getImagen();
-        String nombre = usuarioList.get(i).getName();
+        String nombre = usuarioList.get(i).getNick();
         String pais = usuarioList.get(i).getCountry();
 
         switch (juego){

@@ -1,63 +1,99 @@
 package com.example.madimo_games.breakout;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.madimo_games.R;
 import com.example.madimo_games.main.AltosPuntajes;
 import com.example.madimo_games.main.Constants;
 import com.example.madimo_games.main.MainScreen;
+import com.example.madimo_games.main.Score;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class GameOverScreen extends AppCompatActivity {
-    int puntaje;
-    Bundle recibido;
-    FirebaseAuth auth;
-    DatabaseReference dataBase;
-    TextView score, scoreNuevo;
-    ImageButton btnHome, btnRetry, btnScores;
-    MediaPlayer gameOverMusic;
+    private String gano;
+    private int puntaje;
+    private String puntajeRecord, id, nomJuego;
+    private Bundle recibido;
+    private Score puntuacion = new Score();
+    private FirebaseAuth auth;
+    private DatabaseReference dataBase;
+    private TextView txtBestScore, txtNewScore;
+    private ImageView ivGameOver;
+    private ImageButton btnHome, btnRetry, btnScores;
+    private MediaPlayer gameOverMusic;
+    private Intent inRetry, inMain, inScores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over_screen);
-        Intent inRetry = new Intent(this, MainBreakOut.class);
-        Intent inMain = new Intent(this, MainScreen.class);
-        Intent inScores = new Intent(this, AltosPuntajes.class);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("");
 
+        inRetry = new Intent(this, MainBreakOut.class); // CAMBIAR dependiendo del juego
+        inMain = new Intent(this, MainScreen.class);
+        inScores = new Intent(this, AltosPuntajes.class);
+
         recibido = this.getIntent().getExtras();
         puntaje = recibido.getInt("puntaje");
+        nomJuego = recibido.getString("nomJuego");
+        try {
+            gano = recibido.getString("gano");
+        }catch (Exception e){
 
+        }
         auth = FirebaseAuth.getInstance();
         dataBase = FirebaseDatabase.getInstance().getReference();
-        score = findViewById(R.id.txt_mejorPuntuacion);
-        scoreNuevo = findViewById(R.id.txt_nuevaPuntuacion);
+        id = auth.getCurrentUser().getUid();
+
+        txtBestScore = findViewById(R.id.txt_mejorPuntuacion);
+        txtNewScore = findViewById(R.id.txt_nuevaPuntuacion);
         btnHome = findViewById(R.id.ib_homeGameOver);
         btnRetry = findViewById(R.id.ib_retryGameOver);
         btnScores = findViewById(R.id.ib_scoreGameOver);
+        ivGameOver = findViewById(R.id.iv_GameOver);
+        try{
+            if(gano != null){
+                ivGameOver.setImageResource(R.drawable.win);
+                gameOverMusic = MediaPlayer.create(this,R.raw.victory);
+            }else{
+                gameOverMusic = MediaPlayer.create(this,R.raw.gameover);
+            }
+        }catch (Exception e){
 
+        }
 
+        updateScore(); //verifica si el puntaje actual es mayor al record personal
+        setButtons(); //settea los botones
+        try {
+            getUserInfo(); //obtiene ambos puntajes del usuario [nuevo y record]
+        }catch (Exception e){
+
+        }
+
+    }
+    private void setButtons(){
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,28 +113,27 @@ public class GameOverScreen extends AppCompatActivity {
             public void onClick(View view) {
                 Bundle bundle;
                 bundle = new Bundle();
-                String numJuego = "score3";
-                bundle.putString("numJuego", numJuego);
-                inScores.putExtra("numJuego", numJuego);
+                bundle.putString("numJuego", nomJuego);
+                inScores.putExtra("numJuego", nomJuego);
                 startActivity(inScores);
                 finish();
             }
         });
-        try {
-            getUserInfo();
-        }catch (Exception e){
+    }
 
-        }
+    private void updateScore(){
+        dataBase.child("Users").child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                puntajeRecord = snapshot.child(nomJuego).getValue().toString();
+                puntuacion.nuevoRecord(puntaje,Integer.parseInt(puntajeRecord),dataBase,id, nomJuego);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        Constants.SCREEN_WIDTH = dm.widthPixels;
-        Constants.SCREEN_HEIGHT = dm.heightPixels;
-
+            }
+        });
     }
 
     private void getUserInfo(){
@@ -107,8 +142,8 @@ public class GameOverScreen extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    score.setText(dataSnapshot.child("score3").getValue().toString());
-                    scoreNuevo.setText(puntaje+"");
+                    txtBestScore.setText(dataSnapshot.child(nomJuego).getValue().toString());
+                    txtNewScore.setText(puntaje+"");
 
                 }
             }
@@ -120,27 +155,15 @@ public class GameOverScreen extends AppCompatActivity {
         });
     }
 
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            //hideSystemUI();
-            gameOverMusic = MediaPlayer.create(this,R.raw.gameover);
             gameOverMusic.start();
         }
     }
 
-    private void hideSystemUI() {
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
-    }
+
 
 
 }

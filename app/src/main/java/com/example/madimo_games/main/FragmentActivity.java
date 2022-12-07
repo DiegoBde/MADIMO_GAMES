@@ -25,7 +25,6 @@ public class FragmentActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     ViewPageAdapter viewPageAdapter;
-    FloatingActionButton btnProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +38,10 @@ public class FragmentActivity extends AppCompatActivity {
         Constants.SCREEN_WIDTH = dm.widthPixels;
         Constants.SCREEN_HEIGHT = dm.heightPixels;
 
-
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_paper);
         viewPageAdapter = new ViewPageAdapter(this);
         viewPager2.setAdapter(viewPageAdapter);
-
-        btnProfile = (FloatingActionButton) findViewById(R.id.floatingButtonProfile);
-        btnProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(FragmentActivity.this, ProfileScreen.class));
-            }
-        });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -80,6 +70,7 @@ public class FragmentActivity extends AppCompatActivity {
 
 
     }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

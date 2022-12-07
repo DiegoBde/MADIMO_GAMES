@@ -130,19 +130,19 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnValidar"
+                android:id="@+id/btn_Validar1"
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#2A949F"
-                android:text="ok" />
+                android:text="COMPROBAR" />
 
             <Button
-                android:id="@+id/mostrar"
+                android:id="@+id/btn_mostrar1"
                 android:layout_width="221dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#2A949F"
                 android:onClick="coin"
-                android:text="mostrar">
+                android:text="SOLUCION">
 
             </Button>
 
@@ -160,7 +160,7 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/crono"
+            android:id="@+id/txt_crono1"
             android:layout_width="395dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -170,33 +170,20 @@
             android:textSize="70dp"
             android:textStyle="bold" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/start"
-                android:layout_width="120dp"
+            <TextView
+                android:id="@+id/txt_Puntaje1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#3AB5B3"
-                android:text="start" />
-
-            <Button
-                android:id="@+id/stop"
-                android:layout_width="131dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#3AB5B3"
-                android:text="stop" />
-
-            <Button
-                android:id="@+id/reset"
-                android:layout_width="157dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#3AB5B3"
-                android:text="reset" />
-
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Puntaje: "
+                android:textColor="#FFFFFF"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <TextView
@@ -210,7 +197,7 @@
             android:textSize="32dp" />
 
         <TextView
-            android:id="@+id/texto"
+            android:id="@+id/txt_orden1"
             android:layout_width="match_parent"
             android:layout_height="57dp"
             android:backgroundTint="@color/white"
@@ -220,14 +207,23 @@
             android:textSize="17dp" />
 
         <Button
-            android:id="@+id/autocompletar"
+            android:id="@+id/btn_auto1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#2A949F"
-            android:text="auto" />
+            android:text="SALTAR NIVEL" />
 
         <TextView
             android:id="@+id/numerosordenados"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:textSize="14dp">
+
+
+        </TextView>
+        <TextView
+            android:id="@+id/score"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@color/white"

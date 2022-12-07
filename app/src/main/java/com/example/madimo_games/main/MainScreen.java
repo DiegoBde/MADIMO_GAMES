@@ -47,7 +47,7 @@ public class MainScreen extends AppCompatActivity {
         Intent inLogin = new Intent(this, LoginScreen.class);
         Intent inPerfil = new Intent(this, ProfileScreen.class);
         Intent inJugar = new Intent(this, FragmentActivity.class);
-        Intent inScore = new Intent(this, AltosPuntajes.class);
+        Intent inScore = new Intent(this, mensajes.class);
 
         ivPerfil = findViewById(R.id.iv_perfil);
         ivMusic = findViewById(R.id.ibtn_sound);

@@ -234,7 +234,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnValidar"
+                android:id="@+id/btnValidar4"
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#2A949F"
@@ -270,7 +270,7 @@
             android:text="00:00:00"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="70dp"
+            android:textSize="50dp"
             android:textStyle="bold" />
 
 
@@ -279,27 +279,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/start"
-                android:layout_width="120dp"
+            <TextView
+                android:id="@+id/txt_Puntaje4"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#3AB5B3"
-                android:text="start" />
-
-            <Button
-                android:id="@+id/stop"
-                android:layout_width="131dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#3AB5B3"
-                android:text="stop" />
-
-            <Button
-                android:id="@+id/reset"
-                android:layout_width="157dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#3AB5B3"
-                android:text="reset" />
-
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Puntaje: "
+                android:textColor="#FFFFFF"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <TextView
@@ -328,6 +316,13 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#2A949F"
             android:text="auto" />
+        <TextView
+            android:id="@+id/txtPuntajeActual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Puntaje Actual: "
+            android:textColor="#FFFEFE" />
 
         <TextView
             android:id="@+id/numerosordenados"

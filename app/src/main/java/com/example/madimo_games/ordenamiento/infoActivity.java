@@ -1,5 +1,6 @@
 package com.example.madimo_games.ordenamiento;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
@@ -13,13 +14,15 @@ public class infoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
+
         Bundle recibido = this.getIntent().getExtras();
 
         final String mensaje = recibido.getString("mensaje");
 
         ImageButton im = (ImageButton)findViewById(R.id.btnImagen);
         if(mensaje.equals("OK")) {
-            im.setImageResource(R.drawable.feliz);
+
         }else{
             im.setImageResource(R.drawable.triste);
         }

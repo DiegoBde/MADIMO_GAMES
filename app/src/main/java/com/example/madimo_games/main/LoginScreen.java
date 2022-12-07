@@ -89,7 +89,7 @@ public class LoginScreen extends AppCompatActivity {
                 if(task.isSuccessful()){
                     startActivity(new Intent(LoginScreen.this, ProfileScreen.class));
                     //Toast.makeText(LoginScreen.this, "Bien", Toast.LENGTH_SHORT).show();
-                    //finish();
+                    finish();
                 }else{
                     Toast.makeText(LoginScreen.this, "Error", Toast.LENGTH_SHORT).show();
                 }

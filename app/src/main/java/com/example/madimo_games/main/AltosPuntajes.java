@@ -28,9 +28,7 @@ public class AltosPuntajes extends AppCompatActivity {
     String numJuego;
     Bundle recibido;
     LinearLayoutManager mLayoutManager;
-    //LinearLayoutManager mLayoutManager2;
     RecyclerView recyclerViewUsuarios;
-    //RecyclerView recyclerViewUsuarios2;
     AdaptadorUsuario adaptadorUsuario;
     ArrayList<Usuario> usuarioList;
     FirebaseAuth auth;
@@ -52,23 +50,18 @@ public class AltosPuntajes extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         mLayoutManager = new LinearLayoutManager(this);
-        //mLayoutManager2 = new LinearLayoutManager(this);
         auth = FirebaseAuth.getInstance();
         dataBase = FirebaseDatabase.getInstance().getReference();
         recyclerViewUsuarios = findViewById(R.id.recyclerViewUsuarios);
         txtNombreJuego = findViewById(R.id.txt_juegoTabla);
-        //recyclerViewUsuarios2 = findViewById(R.id.recyclerViewUsuarios2);
 
         mLayoutManager.setReverseLayout(true); //ordenar al reves
         mLayoutManager.setStackFromEnd(true);
         recyclerViewUsuarios.setHasFixedSize(true);
         recyclerViewUsuarios.setLayoutManager(mLayoutManager);
-       // recyclerViewUsuarios2.setHasFixedSize(true);
-       // recyclerViewUsuarios2.setLayoutManager(mLayoutManager2);
 
         usuarioList = new ArrayList<>();
         obtenerTodosLosUsuarios(String.valueOf(numJuego));
-
 
     }
 
@@ -105,9 +98,7 @@ public class AltosPuntajes extends AppCompatActivity {
                             adaptadorUsuario = new AdaptadorUsuario(AltosPuntajes.this, usuarioList, 3);
                             break;
                     }
-
                         recyclerViewUsuarios.setAdapter(adaptadorUsuario);
-
                 }
             }
 

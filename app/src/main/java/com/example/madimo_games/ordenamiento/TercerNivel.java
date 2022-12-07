@@ -8,27 +8,53 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madimo_games.R;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class TercerNivel extends AppCompatActivity {
-    Button start, stop, reset;
-    boolean isOn=true;
-    TextView crono;
+    Intent in;
+    Bundle recibido, b;
+    int puntaje;
+    boolean isOn;
+    private TextView crono, txtPuntaje;
     Thread cronos;
     int mili=0, seg=0, minutos=0;
     Handler h=new Handler();
     MediaPlayer sonidomoneda;
+    MediaPlayer musica;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tercer_nivel);
 
+        b = new Bundle();
+        in = new Intent(this,cuartonivel.class);
+        isOn = true;
+        TextView puntajeactual = findViewById(R.id.txtPuntajeActual);
+        txtPuntaje = findViewById(R.id.txt_Puntaje3);
+        musica = MediaPlayer.create(this,R.raw.menuordenamiento);
+        musica.start();
 
+
+        try{
+            recibido = this.getIntent().getExtras();
+
+            puntaje = recibido.getInt("score");
+            mili = recibido.getInt("mili");
+            seg = recibido.getInt("seg");
+            minutos = recibido.getInt("min");
+
+            puntajeactual.setText("Puntaje Actual: "+puntaje);
+
+        }
+        catch (Exception e)
+        {}
 
         ArrayList<Button> listado = new ArrayList<Button>();
         final ArrayList numeros = new ArrayList();
@@ -58,11 +84,11 @@ public class TercerNivel extends AppCompatActivity {
                     sonidomoneda();
                     texto.setText(texto.getText() + " " + bt.getText());
                     bt.setVisibility(View.INVISIBLE);
+                    puntaje += 100;
+                    txtPuntaje.setText("Puntaje acumulado: "+ puntaje);
                 }
             });
         }
-
-
 
         Button auto =(Button)findViewById(R.id.autocompletar);
 
@@ -90,9 +116,6 @@ public class TercerNivel extends AppCompatActivity {
             }
         });
 
-
-
-
         TextView numOrdenados;
         numOrdenados = (TextView)findViewById(R.id.numerosordenados);
         Button mostrar=findViewById(R.id.mostrar);
@@ -117,7 +140,57 @@ public class TercerNivel extends AppCompatActivity {
                 validarContenido(texto, numeros);}
         });
 
+        crono = (TextView) findViewById(R.id.crono);
 
+        cronos = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (isOn) {
+                        try {
+                            Thread.sleep(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        mili++;
+                        if (mili == 999) {
+                            seg++;
+                            mili = 0;
+                        }
+                        if (seg == 59) {
+                            minutos++;
+                            seg = 0;
+                        }
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                String m = "", s = "", mi = "";
+                                if (mili < 10) {
+                                    m = "00" + mili;
+                                } else if (mili < 100) {
+                                    m = "0" + mili;
+                                } else {
+                                    m = "" + mili;
+                                }
+                                if (seg < 10) {
+                                    s = "0" + seg;
+                                } else {
+                                    s = "" + seg;
+                                }
+                                if (minutos < 10) {
+                                    mi = "0" + minutos;
+                                } else {
+                                    mi = "" + minutos;
+                                }
+                                crono.setText(mi + ":" + s+":" + m);
+                            }
+                        });
+                    }
+                }
+            }
+
+        });
+        cronos.start();
 
     }
 
@@ -138,23 +211,25 @@ public class TercerNivel extends AppCompatActivity {
         String cadena2 = texto.getText().toString().replaceAll(" ","");
         String mensaje;
         if(cadena.equals(cadena2)) {
-            mensaje = "OK";
-            Intent in = new Intent(this,cuartonivel.class);
-            Bundle b = new Bundle();
-            b.putString("mensaje", mensaje);
-            in.putExtras(b);
-            startActivity(in);
-
+            int score = puntaje - ((minutos/59)+(seg));
+            enviarPuntaje(b, score, minutos, seg, mili, in);
         }else{
 
             mensaje="fail";
             finish();
             startActivity(getIntent());
 
-
-
-
         }
 
     }
+
+    private void enviarPuntaje(Bundle b, int score, int min, int seg, int mili, Intent in){
+        b.putInt("score", score);
+        b.putInt("mili",mili);
+        b.putInt("seg",seg);
+        b.putInt("min",min);
+        in.putExtras(b);
+        startActivity(in);
+    }
+
 }

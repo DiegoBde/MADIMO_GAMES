@@ -75,28 +75,36 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txt_nickProfile"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/audiowide"
+            android:layout_weight="0"
             android:gravity="center"
-            android:text="UserNick"
-            android:textColor="#56FAFA"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/audiowide"
-            android:gravity="center"
-            android:text="MEJOR PUNTUACION"
-            android:textColor="#D4DEFD"
-            android:textSize="25sp"
-            android:textStyle="bold|italic"
-            android:translationY="15dp" />
+            <TextView
+                android:id="@+id/txt_nickProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/audiowide"
+                android:gravity="center"
+                android:text="UserNick"
+                android:textColor="#56FAFA"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btn_editarDatos"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:layout_weight="0"
+                android:alpha="0.65"
+                android:backgroundTint="@color/black"
+                android:scaleType="fitXY"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -105,85 +113,169 @@
             android:translationY="15dp">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/txt_nombrePerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:background="#010617"
-                android:fontFamily="@font/audiowide"
                 android:gravity="center"
-                android:text="Ordenamiento"
+                android:text="EDITAR NOMBRE"
                 android:textColor="#56F9F9"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:translationY="20dp" />
+                android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/txt_scoreOrdenamiento"
+                android:id="@+id/txt_paisPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:fontFamily="@font/audiowide"
                 android:gravity="center"
-                android:text="0:0:0"
+                android:text="EDITAR PAIS"
                 android:textColor="#56F9F9"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:translationY="40dp" />
+                android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/txt_correoPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:background="#010617"
-                android:fontFamily="@font/audiowide"
                 android:gravity="center"
-                android:text="Gato"
+                android:text="EDITAR CORREO"
                 android:textColor="#56F9F9"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:translationY="60dp" />
+                android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/txt_scoreGato"
+                android:id="@+id/txt_contraseñaPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:fontFamily="@font/audiowide"
                 android:gravity="center"
-                android:text="0:0:0"
+                android:inputType="textPassword"
+                android:text="CONTRASEÑA"
                 android:textColor="#56F9F9"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:translationY="80dp" />
+                android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:background="#010617"
                 android:fontFamily="@font/audiowide"
                 android:gravity="center"
-                android:text="BreakOut"
-                android:textColor="#56F9F9"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:translationY="100dp" />
+                android:text="MEJOR PUNTUACION"
+                android:textColor="#D4DEFD"
+                android:textSize="25sp"
+                android:textStyle="bold|italic"
+                android:translationY="15dp" />
 
-            <TextView
-                android:id="@+id/txt_scoreBreakOut"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="0"
-                android:fontFamily="@font/audiowide"
                 android:gravity="center"
-                android:text="0:0:0"
-                android:textColor="#56F9F9"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:translationY="120dp" />
+                android:orientation="horizontal"
+                android:translationY="30dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center|top"
+                    android:orientation="vertical"
+                    android:translationX="-20dp">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:background="#010617"
+                        android:fontFamily="@font/audiowide"
+                        android:gravity="center"
+                        android:text="Ordenamix"
+                        android:textColor="#56F9F9"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txt_scoreOrdenamiento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:fontFamily="@font/audiowide"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="#56F9F9"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:translationY="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center|top"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:background="#010617"
+                        android:fontFamily="@font/audiowide"
+                        android:gravity="center"
+                        android:text="Gato"
+                        android:textColor="#56F9F9"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txt_scoreGato"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:fontFamily="@font/audiowide"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="#56F9F9"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:translationY="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center|top"
+                    android:orientation="vertical"
+                    android:translationX="20dp">
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:background="#010617"
+                        android:fontFamily="@font/audiowide"
+                        android:gravity="center"
+                        android:text="BreakOut"
+                        android:textColor="#56F9F9"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txt_scoreBreakOut"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:fontFamily="@font/audiowide"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="#56F9F9"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:translationY="20dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout

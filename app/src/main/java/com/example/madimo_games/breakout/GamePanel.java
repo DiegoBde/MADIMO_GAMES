@@ -2,7 +2,6 @@ package com.example.madimo_games.breakout;
 
 import static java.lang.String.valueOf;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -19,40 +18,37 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import androidx.annotation.NonNull;
-
 import com.example.madimo_games.R;
 import com.example.madimo_games.main.Constants;
 import com.example.madimo_games.main.Score;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 //import androidx.annotation.MainThread;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
-    MainBreakOut mainBreakOut;
+    private MainBreakOut mainBreakOut;
+    private Score clasePuntaje = new Score();
+    private Intent inGameOver = new Intent(getContext(), GameOverScreen.class);
+    private Bundle b = new Bundle();
+
     FirebaseAuth auth;
     DatabaseReference dataBase;
-    int milli=0, seg=0, mins=0, score=0;
-    Score puntaje = new Score();
-    String id;
-    int puntajeNuevo;
-    int puntajeRecord;
-    Resources res = getResources();
-    Bitmap bitmapBG = BitmapFactory.decodeResource(res, R.drawable.space);
-    Bitmap bitmapBG2 = BitmapFactory.decodeResource(res, R.drawable.paddle);
-    Bitmap bitmapBall = BitmapFactory.decodeResource(res, R.drawable.ballspace);
 
-    Intent inGameOver = new Intent(getContext(), GameOverScreen.class);
+    private int milli=0, seg=0, mins=0, score=0;
+    private int puntaje;
+    private String id, nomJuego = "score3";
 
-    MediaPlayer backgroundMusic = MediaPlayer.create(getContext(),R.raw.backgroud_music);
-    MediaPlayer jumpBall = MediaPlayer.create(getContext(),R.raw.pelotarebota);
-    MediaPlayer jumpBall2 = MediaPlayer.create(getContext(),R.raw.pelotarebota);
-    MediaPlayer breakBricks = MediaPlayer.create(getContext(),R.raw.rompebloques);
-    //MediaPlayer gameOverMusic = MediaPlayer.create(getContext(),R.raw.gameover);
+    private Resources res = getResources();
+    private Bitmap bitmapBG = BitmapFactory.decodeResource(res, R.drawable.space);
+    private Bitmap bitmapPaddle = BitmapFactory.decodeResource(res, R.drawable.paddle);
+    private Bitmap bitmapBall = BitmapFactory.decodeResource(res, R.drawable.ballspace);
+
+    private MediaPlayer backgroundMusic = MediaPlayer.create(getContext(),R.raw.backgroud_music);
+    private MediaPlayer jumpBall = MediaPlayer.create(getContext(),R.raw.pelotarebota);
+    private MediaPlayer jumpBall2 = MediaPlayer.create(getContext(),R.raw.pelotarebota);
+    private MediaPlayer breakBricks = MediaPlayer.create(getContext(),R.raw.rompebloques);
+
     private MainThread thread;
     private Rect r = new Rect();
 
@@ -65,22 +61,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private boolean movingPlayer = false;
     private boolean gameOver = false;
     private long gameOverTime;
-    boolean signoY = true;
-    boolean signoX = true;
+    private boolean signoY = true;
+    private boolean signoX = true;
+    private String gano;
 
-    boolean isOn = true;
+    private boolean isOn;
 
     public GamePanel(Context context) {
         super(context);
         auth = FirebaseAuth.getInstance();
         dataBase = FirebaseDatabase.getInstance().getReference();
-        id= auth.getCurrentUser().getUid();
+        id = auth.getCurrentUser().getUid();
         backgroundMusic.setVolume(0.5f,0.5f);
         isOn = true;
         timer();
 
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
+
         player = new RectPlayer(new Rect(50, 100, 300 ,150), Color.TRANSPARENT);
 
         playerPoint = new Point(Constants.SCREEN_WIDTH/2, 4*Constants.SCREEN_HEIGHT/4);
@@ -104,7 +102,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             milli++;
             if (milli == 34) {
                 seg++;
-                score++;
                 //ball.getRectangle().right += 10;
                 //ball.getRectangle().bottom += 10;
                 milli = 0;
@@ -118,38 +115,23 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        return "╰═ Tiempo: "+mins+":"+seg+" ═╯";
+        return "╰═ Tiempo: "+mins+":"+seg+" ═╯"+"\nPuntaje: "+ score;
     }
+
     public void reset(){
-        //Bundle bundle;
-        //bundle = new Bundle();
-        //int puntaje = score;
-        //bundle.putInt("puntaje", puntaje);
-        //inGameOver.putExtra("puntaje", puntaje);
-        //getContext().startActivity(inGameOver);
-        //mainBreakOut.finish();
-
-        /*gameOverMusic.stop();
-        backgroundMusic = MediaPlayer.create(getContext(),R.raw.backgroud_music);
-        backgroundMusic.start();
-        ball = new Ball(new Rect(0, 0, 30 ,30), Color.TRANSPARENT);
-        playerPoint = new Point(Constants.SCREEN_WIDTH/2, 4*Constants.SCREEN_HEIGHT/4);
-        player.update(playerPoint);
-        bricksManager = new BricksManager(getLeft(), getRight(), getTop(), getBottom());
-        ballPoint = new Point(playerPoint.x,playerPoint.y-5); //first point
-        ball.update(ballPoint);
-        movingPlayer = false;
-        milli = 0;
-        mins = 0;
-        seg = 0;
-        score = 0;
-        vel = 15;
-        isOn = true;*/
 
     }
+
     public void onWin(){
         if(bricksManager.bricks.size() == 0){
             gameOver = true;
+            gano = "si";
+            b.putString("gano", gano);
+            puntaje = score - seg;
+            clasePuntaje.sendScore(b,puntaje,nomJuego,inGameOver);
+            getContext().startActivity(inGameOver);
+            mainBreakOut.finish();
+            //pasar String q indique si ganó o no
         }
     }
 
@@ -186,7 +168,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 if(!gameOver && player.getRectangle().contains((int)event.getX(), 4*Constants.SCREEN_HEIGHT/4))
                     movingPlayer = true;
                 if(gameOver && System.currentTimeMillis() - gameOverTime >= 2000){
-                    reset();
+                    //reset();
                     gameOver = false;
                 }
                 break;
@@ -233,58 +215,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
     public void movimientoColision(){
         if (ballPoint.y > Constants.SCREEN_HEIGHT && signoX) {  //  ./
+            gameOver = true;
+            puntaje = score - seg;
+            clasePuntaje.sendScore(b,puntaje, nomJuego, inGameOver);
+
             direccion = 3;
             backgroundMusic.stop();
-            //gameOverMusic.start();
-            puntajeNuevo = score;
-            dataBase.child("Users").child(id).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    puntajeRecord = (int)snapshot.child("score3").getValue();
-                    puntaje.nuevoRecord(puntajeNuevo,puntajeRecord,dataBase,id);
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-            gameOver = true;
-            //getContext().startActivity(inGameOver);
-            Bundle bundle;
-            bundle = new Bundle();
-            int puntaje = score;
-            bundle.putInt("puntaje", puntaje);
-            inGameOver.putExtra("puntaje", puntaje);
             getContext().startActivity(inGameOver);
             mainBreakOut.finish();
         }
         if (ballPoint.y > Constants.SCREEN_HEIGHT && !signoX) {
+            gameOver = true;
+            puntaje = score - seg;
+            clasePuntaje.sendScore(b,puntaje, nomJuego, inGameOver);
+
             direccion = 1;
             backgroundMusic.stop();
-            //gameOverMusic.start();
-            puntajeNuevo = score;
-            dataBase.child("Users").child(id).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    puntajeRecord = (int)snapshot.child("score3").getValue();
-                    puntaje.nuevoRecord(puntajeNuevo,puntajeRecord,dataBase,id);
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-            gameOver = true;
-            //getContext().startActivity(inGameOver);
-            Bundle bundle;
-            bundle = new Bundle();
-            int puntaje = score;
-            bundle.putInt("puntaje", puntaje);
-            inGameOver.putExtra("puntaje", puntaje);
             getContext().startActivity(inGameOver);
             mainBreakOut.finish();
         }
@@ -322,6 +270,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             bricksManager.update();     //actualiza bricks
             movimientoColision();
             if(bricksManager.pelotaCollide(ball)){
+                score +=100;
                 breakBricks.start();
                 if(signoX || signoY){
                     direccion = 3;
@@ -334,7 +283,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }else if(player.playerCollide(ball)){
                 jumpBall.start();
-                if(signoX || signoY){
+                if(signoX ||signoY){
                     direccion = 3;
                 }if(!signoX || signoY){
                     direccion = 1;
@@ -352,17 +301,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         Paint paint = new Paint();
         super.draw(canvas);
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmapBG, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT+200, true);
-        Bitmap resizedBitmap2 = Bitmap.createScaledBitmap(bitmapBG2, player.getRectangle().width(), player.getRectangle().height(), true);
-        Bitmap resizedBitmap3 = Bitmap.createScaledBitmap(bitmapBall, ball.getRectangle().width(), ball.getRectangle().height(), true);
 
-        canvas.drawBitmap(resizedBitmap, 0, 0, paint);
+        Bitmap reBitmapBG = Bitmap.createScaledBitmap(bitmapBG, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT+200, true);
+        Bitmap reBitmapPaddle = Bitmap.createScaledBitmap(bitmapPaddle, player.getRectangle().width(), player.getRectangle().height(), true);
+        Bitmap reBitmapBall = Bitmap.createScaledBitmap(bitmapBall, ball.getRectangle().width(), ball.getRectangle().height(), true);
+
+        canvas.drawBitmap(reBitmapBG, 0, 0, paint);
 
         player.draw(canvas);
-        canvas.drawBitmap(resizedBitmap2, player.getRectangle().left, player.getRectangle().top, paint);
+        canvas.drawBitmap(reBitmapPaddle, player.getRectangle().left, player.getRectangle().top, paint);
 
         ball.draw(canvas);
-        canvas.drawBitmap(resizedBitmap3, ball.getRectangle().left, ball.getRectangle().top, paint);
+        canvas.drawBitmap(reBitmapBall, ball.getRectangle().left, ball.getRectangle().top, paint);
 
         bricksManager.draw(canvas);
 
@@ -373,25 +323,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         if(gameOver){
             isOn=false;
-           // paint.setTextSize(100);
-            //paint.setColor(Color.rgb(235,101,71));
-           // paint.setTypeface(getResources().getFont(R.font.audiowide));
-           // drawCenterText(canvas, paint, "〘 Game Over 〙");
 
         }
 
     }
 
-    public void drawCenterText(Canvas canvas, Paint paint, String text){
-        paint.setTextAlign(Paint.Align.LEFT);
-        canvas.getClipBounds(r);
-        int cHeight = r.height();
-        int cWidth = r.width();
-        paint.getTextBounds(text, 0, text.length(), r);
-        float x = cWidth / 2f - r.width() / 2f - r.left;
-        float y = cHeight / 2f + r.height() / 2f - r.bottom;
-        canvas.drawText(text,x,y,paint);
-    }
 
     public void cronometro(Canvas canvas, Paint paint, String text){
         paint.setTextAlign(Paint.Align.LEFT);
