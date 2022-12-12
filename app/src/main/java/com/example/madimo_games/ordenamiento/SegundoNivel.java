@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -82,7 +84,7 @@ public class SegundoNivel extends AppCompatActivity {
         listado.add((Button) findViewById(R.id.btn22));
         listado.add((Button) findViewById(R.id.btn23));
         listado.add((Button) findViewById(R.id.btn24));
-
+        final Vibrator vibrator = (Vibrator)this.getSystemService(Context.VIBRATOR_SERVICE);
         final TextView texto = (TextView)findViewById(R.id.texto);
 
         for (final Button bt:listado) {
@@ -92,6 +94,7 @@ public class SegundoNivel extends AppCompatActivity {
             bt.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View view) {
                     sonidomoneda();
+                    vibrator.vibrate(1000);
                     texto.setText(texto.getText() + " " + bt.getText());
                     bt.setVisibility(View.INVISIBLE);
                     puntaje += 100;
@@ -235,7 +238,9 @@ public class SegundoNivel extends AppCompatActivity {
         b.putInt("seg",seg);
         b.putInt("min",min);
         in.putExtras(b);
+        musica.release();
         startActivity(in);
+
     }
 
 }

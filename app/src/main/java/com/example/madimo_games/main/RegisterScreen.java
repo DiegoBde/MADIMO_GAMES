@@ -41,7 +41,7 @@ public class RegisterScreen extends AppCompatActivity {
     private ArrayList<String> listCategorias;
     private Map<String, ArrayList<String>> mapChild;
     private VideoView vvFondoRegister;
-    String email, password, name, nick, pais, imagen = "", item;
+    String email, password, name, nick, pais, imagen = "", token = "", item;
     int score1 = 0;
     int score2 = 0;
     int score3 = 0;
@@ -159,6 +159,7 @@ public class RegisterScreen extends AppCompatActivity {
                     map.put("country", pais);
                     map.put("email", email);
                     map.put("pass", password);
+                    map.put("token", token);
                     map.put("imagen", imagen);
                     map.put("score1", score1);
                     map.put("score2", score2);

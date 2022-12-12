@@ -16,6 +16,7 @@ import android.widget.VideoView;
 
 import com.example.madimo_games.R;
 import com.example.madimo_games.gato.MainGato;
+import com.example.madimo_games.gato.PlayerName;
 
 public class GatoFragment extends Fragment  {
     private VideoView gameplayGato;
@@ -51,7 +52,7 @@ public class GatoFragment extends Fragment  {
             @Override
             public void onClick(View view) {
 
-                Intent in = new Intent(getActivity(), MainGato.class);
+                Intent in = new Intent(getActivity(), PlayerName.class);
                 //in.putExtra("algo", "Cosas");
                 startActivity(in);
             }

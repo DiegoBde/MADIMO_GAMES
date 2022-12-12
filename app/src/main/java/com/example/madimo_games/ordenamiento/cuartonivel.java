@@ -1,9 +1,11 @@
 package com.example.madimo_games.ordenamiento;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -84,7 +86,7 @@ public class cuartonivel extends AppCompatActivity {
         listado.add((Button) findViewById(R.id.btn22));
         listado.add((Button) findViewById(R.id.btn23));
         listado.add((Button) findViewById(R.id.btn24));
-
+        final Vibrator vibrator = (Vibrator)this.getSystemService(Context.VIBRATOR_SERVICE);
         final TextView texto = (TextView)findViewById(R.id.texto);
 
         final ArrayList numeros = new ArrayList();
@@ -96,6 +98,7 @@ public class cuartonivel extends AppCompatActivity {
             bt.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View view) {
                     sonidomoneda();
+                    vibrator.vibrate(1000);
                     texto.setText(texto.getText() + " " + bt.getText());
                     bt.setVisibility(View.INVISIBLE);
                     puntaje += 100;
@@ -206,6 +209,7 @@ public class cuartonivel extends AppCompatActivity {
             int score = puntaje - ((minutos/59)+(seg));
             b.putString("gano", gano);
             clasePuntaje.sendScore(b,score, nomJuego, in);
+            musica.release();
             startActivity(in);
         }else{
             Toast.makeText(this, "Lose", Toast.LENGTH_SHORT).show();

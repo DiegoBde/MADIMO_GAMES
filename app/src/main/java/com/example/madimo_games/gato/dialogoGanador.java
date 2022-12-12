@@ -2,6 +2,7 @@ package com.example.madimo_games.gato;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +13,15 @@ import androidx.annotation.NonNull;
 import com.example.madimo_games.R;
 
 public class dialogoGanador extends Dialog {
+
     private final String mensaje;
     private final MainGato mainActivity;
-    public dialogoGanador(@NonNull Context context, String mensaje, MainGato mainActivity) {
+
+    public dialogoGanador(@NonNull Context context, String mensaje) {
         super(context);
         this.mensaje = mensaje;
-        this.mainActivity = mainActivity;
+        this.mainActivity = ((MainGato)context);
+
     }
 
     @Override
@@ -32,10 +36,14 @@ public class dialogoGanador extends Dialog {
         btnVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mainActivity.restartMatch();
+
                 dismiss();
+                getContext().startActivity(new Intent(getContext(), PlayerName.class));
+                mainActivity.finish();
 
             }
         });
+
+
     }
 }

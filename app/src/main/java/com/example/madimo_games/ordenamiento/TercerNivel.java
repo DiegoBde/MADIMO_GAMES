@@ -1,9 +1,11 @@
 package com.example.madimo_games.ordenamiento;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -71,7 +73,7 @@ public class TercerNivel extends AppCompatActivity {
         listado.add((Button) findViewById(R.id.btn10));
         listado.add((Button) findViewById(R.id.btn11));
         listado.add((Button) findViewById(R.id.btn12));
-
+        final Vibrator vibrator = (Vibrator)this.getSystemService(Context.VIBRATOR_SERVICE);
 
         final TextView texto = (TextView)findViewById(R.id.texto);
 
@@ -82,6 +84,7 @@ public class TercerNivel extends AppCompatActivity {
             bt.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View view) {
                     sonidomoneda();
+                    vibrator.vibrate(1000);
                     texto.setText(texto.getText() + " " + bt.getText());
                     bt.setVisibility(View.INVISIBLE);
                     puntaje += 100;
@@ -229,6 +232,7 @@ public class TercerNivel extends AppCompatActivity {
         b.putInt("seg",seg);
         b.putInt("min",min);
         in.putExtras(b);
+        musica.release();
         startActivity(in);
     }
 

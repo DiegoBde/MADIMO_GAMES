@@ -16,12 +16,16 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madimo_games.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class AdaptadorUsuario extends RecyclerView.Adapter<AdaptadorUsuario.myHolder>{
-
     private Context context;
     private List<Usuario> usuarioList;
     private int juego, puntaje;
@@ -105,4 +109,5 @@ public class AdaptadorUsuario extends RecyclerView.Adapter<AdaptadorUsuario.myHo
             paisJugador = itemView.findViewById(R.id.iv_banderaPais);
         }
     }
+
 }

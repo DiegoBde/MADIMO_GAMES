@@ -1,12 +1,12 @@
 package com.example.madimo_games.main;
 
 public class Usuario {
-    String name, nick, country, email, pass, imagen;
+    String name, nick, country, email, pass, imagen, token;
     int score1, score2, score3;
     public Usuario(){
 
     }
-    public Usuario(String country, String email, String imagen, String name, String nick, String pass, int score1, int score2, int score3) {
+    public Usuario(String country, String email, String imagen, String name, String nick, String pass, int score1, int score2, int score3, String token) {
         this.country = country;
         this.email = email;
         this.imagen = imagen;
@@ -16,6 +16,7 @@ public class Usuario {
         this.score1 = score1;
         this.score2 = score2;
         this.score3 = score3;
+        this.token = token;
     }
 
     public String getName() {
@@ -88,5 +89,13 @@ public class Usuario {
 
     public void setScore3(int score3) {
         this.score3 = score3;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
